@@ -12,6 +12,14 @@ services:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
 
+  python-server:
+    build: . 
+    image: python-server
+    container_name: python-server
+    ports:
+      - 3001:8000  
+    restart: unless-stopped  
+
   ollama:
     volumes:
       - ollama:/root/.ollama
