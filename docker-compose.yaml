@@ -1,0 +1,9 @@
+version: "3"
+services:
+    ollama:
+        volumes:
+            - /ollama:/root/.ollama
+        ports:
+            - 5001:11434
+        container_name: ollama
+        image: ollama/ollama
