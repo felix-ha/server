@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from server import app, ROUTE_SERVER_STATUS, ServerStatus
+from backend.server import app, ROUTE_SERVER_STATUS, ServerStatus
 import pytest
 
 
