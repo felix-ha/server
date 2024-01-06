@@ -7,4 +7,4 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8501"]
+ENTRYPOINT ["streamlit", "run", "Home.py", "--server.port=8501", "--server.address=0.0.0.0"]
