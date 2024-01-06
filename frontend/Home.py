@@ -20,7 +20,7 @@ Check out the [web ui here](https://ollama.felix-jobson.net)
 
 The api is available at [ollama.api.felix-jobson.net](https://ollama.api.felix-jobson.net)
 
-## [transformers-playground](https://transformers-playgroundt.felix-jobson.net)  
+## [transformers-playground](https://transformers-playground.felix-jobson.net)  
 
 A streamlit app to interact with different language models. The code is available on [github](https://github.com/felix-ha/transformers-playground).
 
