@@ -1,8 +1,3 @@
-import streamlit as st
-
-
-st.write(
-    """
 # Hello there!
 
 Wecome to my page. I'm Felix and I'm a Data Scientist thats curious and loves to build stuff.   
@@ -24,5 +19,3 @@ The api is available at [ollama.api.felix-jobson.net](https://ollama.api.felix-j
 
 A streamlit app to interact with different language models. The code is available on [github](https://github.com/felix-ha/transformers-playground).
 
-"""
-)
