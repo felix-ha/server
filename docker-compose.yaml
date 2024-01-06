@@ -34,6 +34,13 @@ services:
       - 3003:8501
     restart: unless-stopped
 
+  transformers-playground:
+    image: transformers-playground
+    container_name: transformers-playground
+    ports:
+      - 3004:8501
+    restart: unless-stopped
+
   ollama:
     volumes:
       - ollama:/root/.ollama
