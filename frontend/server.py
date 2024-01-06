@@ -1,7 +1,5 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
-from pathlib import Path
 import logging
 
 logger = logging.getLogger()
@@ -14,19 +12,8 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
 
-class ServerStatus(BaseModel):
-    status: bool
-
-
 app = FastAPI()
 
-ROUTE_SERVER_STATUS = "/status"
-
-
-@app.get(ROUTE_SERVER_STATUS, response_model=ServerStatus)
-def server_is_online():
-    logger.info("checked server status")
-    return ServerStatus(status=True)
 
 app.mount("/", StaticFiles(directory="static", html = True), name="static")
 
