@@ -1,3 +1,3 @@
 .PHONY: docker_build
 docker_build:
-    docker build -t streamlit .
+	docker build -t frontend . 
