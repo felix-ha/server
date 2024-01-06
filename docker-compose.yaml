@@ -26,6 +26,13 @@ services:
     ports:
       - 3002:8000  
     restart: unless-stopped  
+
+  streamlit:
+    image: streamlit
+    container_name: streamlit
+    ports:
+      - 3003:8501
+    restart: unless-stopped
     
   ollama:
     volumes:
