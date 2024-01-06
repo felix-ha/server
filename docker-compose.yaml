@@ -27,6 +27,13 @@ services:
       - 3002:8000  
     restart: unless-stopped  
 
+  fgpt:
+    image: fgpt
+    container_name: fgpt
+    ports:
+      - 3003:8501
+    restart: unless-stopped
+
   ollama:
     volumes:
       - ollama:/root/.ollama
