@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from pathlib import Path
+from datetime import datetime
+from contextlib import asynccontextmanager
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import logging
 
 logger = logging.getLogger()
@@ -18,10 +20,28 @@ class ServerStatus(BaseModel):
     status: bool
 
 
-app = FastAPI()
+scheduler = AsyncIOScheduler()
+
+@scheduler.scheduled_job('interval', minutes=5)
+async def intervall_log():
+    now = datetime.now()
+    logger.info(f'Time: {now}')
+
+@scheduler.scheduled_job('cron', hour=0, minute=0, second=0)
+async def cron_log():
+    now = datetime.now()
+    logger.info(f'CRON JOB at time: {now}')
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler.start()
+    yield
+    scheduler.shutdown()
+
+
+app = FastAPI(lifespan=lifespan)
 
 ROUTE_SERVER_STATUS = "/status"
-
 
 @app.get(ROUTE_SERVER_STATUS, response_model=ServerStatus)
 def server_is_online():
