@@ -12,6 +12,31 @@ services:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
 
+  wordpress:
+    image: wordpress
+    volumes:
+      - ./www:/var/www/html
+    ports:
+      - "3030:80"
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - ./db:/var/lib/mysql
+
   frontend:
     image: frontend
     container_name: frontend
@@ -20,12 +45,12 @@ services:
     restart: unless-stopped
 
   python-server:
-    build: . 
+    build: .
     image: python-server
     container_name: python-server
     ports:
-      - 3002:8000  
-    restart: unless-stopped  
+      - 3002:8000
+    restart: unless-stopped
 
   fgpt:
     image: fgpt
