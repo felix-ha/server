@@ -16,7 +16,7 @@ services:
     image: frontend
     container_name: frontend
     ports:
-      - 3001:8501
+      - 3001:8000
     restart: unless-stopped
 
   python-server:
