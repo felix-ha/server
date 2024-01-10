@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'JetBrains Mono';
+            font-size: 20px;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .contact-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .contact-icons img {
+            width: 40px;
+            height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Hello there!</h1>
+    <p>Welcome to my page. I'm Felix and I'm a Data Scientist thats curious and loves to build stuff. I'm just setting
+        up my personal server and here you can find the things I developed and deployed.</p>
+
+    <h2><a href="https://fgpt.felix-jobson.net">fGPT</a></h2>
+    <p>This is a language model trained that I trained from scratch on <a href="https://arxiv.org/abs/2305.07759">tiny
+            stories</a>. Further details and the code are available on <a
+            href="https://github.com/felix-ha/fGPT">github</a>.</p>
+
+    <h2><a href="https://ollama.felix-jobson.net">ollama</a></h2>
+    <p>Recently I played around with <a href="https://ollama.ai/">ollama</a> and I host the <a
+            href="https://github.com/ollama-webui/ollama-webui">web ui</a> as well as the api on my server. The api is
+        available at <a href="https://ollama.api.felix-jobson.net/">ollama.api.felix-jobson.net</a></p>
+
+
+    <h2><a href="https://transformers-playground.felix-jobson.net">transformers-playground</a></h2>
+    <p>A streamlit app to interact with different language models. The code is available on <a
+            href="https://github.com/felix-ha/transformers-playground">github</a>.</p>
+
+
+    <section>
+        <h3>find me</h3>
+        <div class="contact-icons">
+            <a href="https://github.com/felix-ha" title="GitHub" target="_blank">
+                <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub">
+            </a>
+        </div>
+    </section>
+
+
+    <div id="dynamicTextContainer">
+        <p class=right>last update: {{ json_data.text }}</p>
+    </div>
+
+
+</body>
+
+</html>
