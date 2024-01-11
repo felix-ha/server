@@ -20,6 +20,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - /home/resources:/home/resources
 
   python-server:
     build: . 
@@ -30,6 +32,8 @@ services:
     restart: unless-stopped  
     env_file:
       - .env
+    volumes:
+      - /home/resources:/home/resources
 
   fgpt:
     image: fgpt
