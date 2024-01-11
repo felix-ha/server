@@ -47,6 +47,8 @@ def update_state(config: Config) -> None:
     with open(file_name, 'w') as f:
         f.write(state.model_dump_json())
 
+    logging.info(f"updated state: {state} at {file_name}")
+
 
 if __name__ == '__main__':
     os.environ['PATH_RESOURCES'] = r".\\resources"
