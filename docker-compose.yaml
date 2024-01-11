@@ -18,6 +18,8 @@ services:
     ports:
       - 3001:8000
     restart: unless-stopped
+    env_file:
+      - .env
 
   python-server:
     build: . 
@@ -26,6 +28,8 @@ services:
     ports:
       - 3002:8000  
     restart: unless-stopped  
+    env_file:
+      - .env
 
   fgpt:
     image: fgpt

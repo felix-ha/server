@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from datetime import datetime
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from config import Config
+from logic import update_state
 import logging
 
 logger = logging.getLogger()
@@ -22,10 +24,10 @@ class ServerStatus(BaseModel):
 
 scheduler = AsyncIOScheduler()
 
-@scheduler.scheduled_job('interval', minutes=5)
-async def intervall_log():
-    now = datetime.now()
-    logger.info(f'Time: {now}')
+@scheduler.scheduled_job('interval', minutes=2)
+async def update_job():
+    update_state(Config())
+    logger.info('updated state')
 
 @scheduler.scheduled_job('cron', hour=0, minute=0, second=0)
 async def cron_log():
@@ -52,4 +54,7 @@ app.mount("/", StaticFiles(directory="static", html = True), name="static")
 
 if __name__ == "__main__":
     import uvicorn
+    import os
+    os.environ['PATH_RESOURCES'] = r".\\resources"
+    os.environ['STATE_FILE'] = "state.json"
     uvicorn.run(app, host="0.0.0.0", port=5000)
