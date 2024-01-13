@@ -36,7 +36,7 @@ except Exception as e:
 
 scheduler = AsyncIOScheduler()
 
-@scheduler.scheduled_job('interval', minutes=60)
+@scheduler.scheduled_job('interval', minutes=2)
 async def update_job():
     update_state(Config())
     logger.info('updated state')

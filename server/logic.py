@@ -38,7 +38,7 @@ def call_llm(prompt: str) -> str:
     route = "/api/generate"
 
     # TODO: move model to config
-    options = {"temperature": 0.7}
+    options = {"temperature": 0.3}
     data = {"model": "phi", "stream": False, "prompt": prompt, "options": options}
 
     try:
@@ -47,6 +47,9 @@ def call_llm(prompt: str) -> str:
             json_response = response.json()
             answer_raw = json_response['response']
             answer = answer_raw.replace("\n", "").replace("\"", "")
+        else:
+            logging.error(f"Server responded with {response.status_code}")
+            answer = response.text
     except:
         logging.exception(f"Server is offline.")
 
