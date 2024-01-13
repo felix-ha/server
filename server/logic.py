@@ -8,7 +8,9 @@ from datetime import datetime
 import httpx
 import logging
 from config import Config
+from email_client import get_email_client
 from pymongo import MongoClient
+import logging
 
 
 class State(BaseModel):
@@ -38,7 +40,7 @@ def call_llm(prompt: str) -> str:
     route = "/api/generate"
 
     # TODO: move model to config
-    options = {"temperature": 0.3}
+    options = {"temperature": 0.3, "seed": int(time.time())}
     data = {"model": "phi", "stream": False, "prompt": prompt, "options": options}
 
     try:
@@ -66,7 +68,7 @@ def call_llm(prompt: str) -> str:
 def update_state(config: Config) -> None:
     Path(config.resources_path).mkdir(parents=True, exist_ok=True)
 
-    prompt = "Write a headline for a homepage."
+    prompt = "Tell me a joke. Output the only the joke."
     answer = call_llm(prompt)
 
     state = State(update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -84,7 +86,6 @@ def update_state(config: Config) -> None:
     logging.info(f"written state to {file_name}")
 
 
-
 def get_server_data(config: Config):
     state_file = Path(config.resources_path, config.state_file)
 
@@ -96,6 +97,26 @@ def get_server_data(config: Config):
         json_data = {'update_time': datetime.now(), 'text': "failed"}
         
     return json_data
+
+EMAIL_CLIENT = get_email_client()
+
+def send_mail():
+    try:
+        logging.info(f'Sending mail')
+
+        receiver_email = "hauerf98@gmail.com"
+        subject = "Test"
+        message="""
+        Dies ist ein Test 
+
+
+        This message is sent from Python.
+        """
+
+        EMAIL_CLIENT.send(receiver_email, subject, message)
+
+    except Exception as e:
+        logging.exception(f"Sending mail failed: {e}")
 
 
 if __name__ == '__main__':

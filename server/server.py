@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from pymongo import MongoClient
 
-from logic import update_state, get_server_data
+from logic import update_state, get_server_data, send_mail
 from config import Config
 
 import logging
@@ -36,15 +36,15 @@ except Exception as e:
 
 scheduler = AsyncIOScheduler()
 
-@scheduler.scheduled_job('interval', minutes=2)
+@scheduler.scheduled_job('interval', minutes=10)
 async def update_job():
     update_state(Config())
     logger.info('updated state')
 
 @scheduler.scheduled_job('cron', hour=0, minute=0, second=0)
 async def cron_log():
-    now = datetime.now()
-    logger.info(f'CRON JOB at time: {now}')
+    send_mail()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

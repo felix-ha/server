@@ -18,6 +18,8 @@ services:
     ports:
       - 3001:8000
     restart: unless-stopped
+    environment:
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     env_file:
       - .env
     volumes:
