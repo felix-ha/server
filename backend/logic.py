@@ -5,6 +5,7 @@ from datetime import datetime
 import httpx
 import logging
 from config import Config
+from pymongo import MongoClient
 
 
 class State(BaseModel):
@@ -12,9 +13,25 @@ class State(BaseModel):
     text: str
 
 
+class Mongo:
+    def __init__(self, local=False):
+       if local:
+            self.client = MongoClient('mongodb://root:example@0.0.0.0:27017/')
+       else:
+            self.client = MongoClient('mongodb', 27017, username='root', password='example')
+       self.db = self.client["database"]
+       self.collection = self.db['states']
+
+    def insert(self, state: State):
+        self.collection.insert_one(state.model_dump())
+
+
+MONGO = Mongo()
+#MONGO.insert(State(update_time="-", text="asdf"))
+
 def call_llm(prompt: str) -> str:
     answer = "Ups, something went wrong."
-    url_server = "https://ollama.api.felix-jobson.net" 
+    url_server = "https://ollama.api.felix-jobson.net"
     route = "/api/generate"
 
     # TODO: move model to config
@@ -29,7 +46,7 @@ def call_llm(prompt: str) -> str:
             answer = answer_raw.replace("\n", "").replace("\"", "")
     except:
         logging.exception(f"Server is offline.")
-    
+
     return answer
 
 
@@ -37,21 +54,27 @@ def update_state(config: Config) -> None:
     Path(config.resources_path).mkdir(parents=True, exist_ok=True)
 
     prompt = "Write a headline for a homepage."
-    answer = call_llm(prompt) 
+    answer = call_llm(prompt)
 
-    state = State(update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 
+    state = State(update_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                   text=answer)
 
-    file_name = Path(config.resources_path, config.state_file) 
+    MONGO.insert(state)
+
+    logging.info(f'written state {state} to mongodb')
+
+    file_name = Path(config.resources_path, config.state_file)
 
     with open(file_name, 'w') as f:
         f.write(state.model_dump_json())
 
-    logging.info(f"updated state: {state} at {file_name}")
+    logging.info(f"written state to {file_name}")
 
 
 if __name__ == '__main__':
-    os.environ['PATH_RESOURCES'] = r".\\resources"
-    os.environ['STATE_FILE'] = "state.json"
-    config = Config()
-    update_state(config)
+    mongo = Mongo()
+
+    #mongo.collection.drop()
+
+    for document in mongo.collection.find():
+        print(document)

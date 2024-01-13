@@ -35,6 +35,17 @@ services:
     volumes:
       - /home/resources:/home/resources
 
+  mongodb:
+    image: mongo:latest
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - /dbdata:/data/db
+
   fgpt:
     image: fgpt
     container_name: fgpt
