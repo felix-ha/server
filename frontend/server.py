@@ -33,7 +33,7 @@ async def read_item(request: Request):
     try:    
         records = []
         for document in collection.find():
-            records.append({"Date": document["update_time"], "text": document["text"]})
+            records.append({"update_time": document["update_time"], "text": document["text"]})
     except Exception as e:
         logging.info(f"retrieving entries from mongodb failed: {e}")
         records = [{'update_time': datetime.now(), 'text': 'loading failed'}]
