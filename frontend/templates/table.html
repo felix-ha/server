@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Table</title>
+</head>
+<body>
+    <h1>MongoDB entries</h1>
+    <table>
+        <tr>
+            <th>update time</th>
+            <th>Text</th>
+        </tr>
+        {% for record in records %}
+            <tr>
+                <td>{{ record['update_time'] }}</td>
+                <td>{{ record['text'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
