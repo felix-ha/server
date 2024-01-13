@@ -1,3 +1,6 @@
+import json
+from datetime import datetime
+import logging
 import os
 from pydantic import BaseModel
 from pathlib import Path
@@ -69,6 +72,20 @@ def update_state(config: Config) -> None:
         f.write(state.model_dump_json())
 
     logging.info(f"written state to {file_name}")
+
+
+
+def get_server_data(config: Config):
+    state_file = Path(config.resources_path, config.state_file)
+
+    try:
+        with open(state_file, 'r') as f:
+            json_data = json.load(f)
+    except Exception as e:
+        logging.exception(e)
+        json_data = {'update_time': datetime.now(), 'text': "failed"}
+        
+    return json_data
 
 
 if __name__ == '__main__':

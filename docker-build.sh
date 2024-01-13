@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-cd $HOME/server/frontend
-make docker_build
-
-cd $HOME/server/backend
+cd $HOME/server
 make docker_build
 
 cd $HOME/fGPT
