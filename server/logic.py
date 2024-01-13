@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
+import time
 import logging
-import os
 from pydantic import BaseModel
 from pathlib import Path
 from datetime import datetime
@@ -48,8 +48,15 @@ def call_llm(prompt: str) -> str:
             answer_raw = json_response['response']
             answer = answer_raw.replace("\n", "").replace("\"", "")
         else:
-            logging.error(f"Server responded with {response.status_code}")
-            answer = response.text
+            time.sleep(30)
+            response = httpx.post(f"{url_server}{route}", json=data, headers={"Content-Type": "application/json"}, timeout=None)
+            if response.status_code == 200:
+                json_response = response.json()
+                answer_raw = json_response['response']
+                answer = answer_raw.replace("\n", "").replace("\"", "")
+            else:
+                logging.error(f"Server responded with {response.status_code}")
+                answer = response.text
     except:
         logging.exception(f"Server is offline.")
 
