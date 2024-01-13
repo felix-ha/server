@@ -18,9 +18,9 @@ except Exception as e:
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-templates = Jinja2Templates(directory="frontend/templates")
+templates = Jinja2Templates(directory="templates")
 import logging
 
 @app.get("/", response_class=HTMLResponse)
