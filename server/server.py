@@ -39,11 +39,10 @@ scheduler = AsyncIOScheduler()
 @scheduler.scheduled_job('interval', minutes=20)
 async def update_job():
     update_state(Config())
-    send_mail()
 
 @scheduler.scheduled_job('cron', hour=0, minute=0, second=0)
 async def cron_log():
-    send_mail()
+    pass
 
 
 @asynccontextmanager
