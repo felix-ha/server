@@ -36,7 +36,7 @@ MONGO = Mongo()
 
 def call_llm(prompt: str, model="phi") -> str:
     answer = ""
-    url_server = "https://ollama.api.felix-jobson.net"
+    url_server = "http://ollama:11434"
     route = "/api/generate"
 
     options = {"temperature": 5, "seed": int(time.time())}
