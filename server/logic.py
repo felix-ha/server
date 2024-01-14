@@ -34,14 +34,13 @@ class Mongo:
 MONGO = Mongo()
 #MONGO.insert(State(update_time="-", text="asdf"))
 
-def call_llm(prompt: str) -> str:
-    answer = "Ups, something went wrong."
+def call_llm(prompt: str, model="phi") -> str:
+    answer = ""
     url_server = "https://ollama.api.felix-jobson.net"
     route = "/api/generate"
 
-    # TODO: move model to config
-    options = {"temperature": 0.3, "seed": int(time.time())}
-    data = {"model": "phi", "stream": False, "prompt": prompt, "options": options}
+    options = {"temperature": 5, "seed": int(time.time())}
+    data = {"model": model, "stream": False, "prompt": prompt, "options": options}
 
     try:
         response = httpx.post(f"{url_server}{route}", json=data, headers={"Content-Type": "application/json"}, timeout=None)
@@ -104,13 +103,18 @@ def send_mail():
     try:
         logging.info(f'Sending mail')
 
+        prompt = "Tell me a joke. Output the only the joke."
+        joke_phi = call_llm(prompt, model="phi")
+        joke_mistral = call_llm(prompt, model="mistral:instruct")
+
         receiver_email = "hauerf98@gmail.com"
-        subject = "Test"
-        message="""
-        Dies ist ein Test 
+        subject = "Update"
+        message=f"""
+        Joke from phi-2:
+        {joke_phi}
 
-
-        This message is sent from Python.
+        Joke from mistral:
+        {joke_mistral}
         """
 
         EMAIL_CLIENT.send(receiver_email, subject, message)
